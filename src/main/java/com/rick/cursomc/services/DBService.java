@@ -1,13 +1,8 @@
 package com.rick.cursomc.services;
 
-import com.rick.cursomc.domain.Categoria;
-import com.rick.cursomc.domain.Cidade;
-import com.rick.cursomc.domain.Estado;
-import com.rick.cursomc.domain.Produto;
-import com.rick.cursomc.repositories.CategoriaRepository;
-import com.rick.cursomc.repositories.CidadeRepository;
-import com.rick.cursomc.repositories.EstadoRepository;
-import com.rick.cursomc.repositories.ProdutoRepository;
+import com.rick.cursomc.domain.*;
+import com.rick.cursomc.enums.TipoCliente;
+import com.rick.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +22,12 @@ public class DBService {
 
     @Autowired
     private CidadeRepository cidadeRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
     public void instanciaDB() {
 
@@ -57,5 +58,15 @@ public class DBService {
 
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+
+        Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA);
+        Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
+        Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "37227734", cli1, c2);
+
+        cli1.getTelefones().addAll(Arrays.asList("27363323", "938329609"));
+        cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+
+        clienteRepository.saveAll(Arrays.asList(cli1));
+        enderecoRepository.saveAll(Arrays.asList(e1, e2));
     }
 }
