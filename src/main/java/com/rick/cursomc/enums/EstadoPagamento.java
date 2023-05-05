@@ -1,13 +1,15 @@
 package com.rick.cursomc.enums;
 
-public enum TipoCliente {
-    PESSOAFISICA(0, "PESSOA_FISICA"),
-    PESSOAJURIDICA(1, "PESSOA_JURIDICA");
+public enum EstadoPagamento {
+
+    PENDENTE(0, "Pendente"),
+    QUITADO(1, "Quitado"),
+    CANCELADO(2, "Cancelado");
 
     private Integer cod;
     private String descricao;
 
-    private TipoCliente(Integer cod, String descricao) {
+    private EstadoPagamento(Integer cod, String descricao) {
         this.cod = cod;
         this.descricao = descricao;
     }
@@ -20,15 +22,15 @@ public enum TipoCliente {
         return descricao;
     }
 
-    public static TipoCliente toEnum(Integer cod) {
+    public static EstadoPagamento toEnum(Integer cod) {
         if (cod == null) {
             return null;
         }
-        for (TipoCliente x : TipoCliente.values()) {
+        for (EstadoPagamento x : EstadoPagamento.values()) {
             if (cod.equals(x.getCod())) {
                 return x;
             }
         }
-        throw new IllegalArgumentException("Tipo de Cliente Inválido: "+cod);
+        throw new IllegalArgumentException("Estado de Pagamento Inválido: "+cod);
     }
 }
