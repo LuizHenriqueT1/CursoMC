@@ -1,6 +1,7 @@
 package com.rick.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.rick.cursomc.domain.dtos.ClienteDTO;
 import com.rick.cursomc.enums.TipoCliente;
 import jakarta.persistence.*;
 
@@ -42,7 +43,13 @@ public class Cliente implements Serializable {
         this.nome = nome;
         this.email = email;
         this.cpfOuCnpj = cpfOuCnpj;
-        this.tipo = tipo.getCod();
+        this.tipo = (tipo==null) ? null : tipo.getCod();
+    }
+
+    public Cliente(ClienteDTO objDto) {
+        this.id = objDto.getId();
+        this.nome = objDto.getNome();
+        this.email = objDto.getEmail();
     }
 
     public Integer getId() {

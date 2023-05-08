@@ -33,7 +33,12 @@ public class CategoriaService {
     }
 
     public void delete(Integer id) {
-        repository.deleteById(id);
+        findByID(id);
+        try {
+            repository.deleteById(id);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("Não é possivel excluir porque há entidades relacionadas");
+        }
     }
 
     public Categoria create(CategoriaDTO objDto) {
