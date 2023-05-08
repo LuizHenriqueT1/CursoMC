@@ -6,6 +6,10 @@ import com.rick.cursomc.repositories.CategoriaRepository;
 import com.rick.cursomc.services.exceptions.DataIntegrityViolationException;
 import com.rick.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +48,11 @@ public class CategoriaService {
         findByID(id);
         Categoria oldObj = new Categoria(objDto);
         return repository.save(oldObj);
+    }
+
+    public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        Pageable pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return repository.findAll(pageRequest);
     }
 
     private void validaCategoria(CategoriaDTO objDto) {
