@@ -1,5 +1,6 @@
 package com.rick.cursomc.domain;
 
+import com.rick.cursomc.domain.dtos.CategoriaDTO;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -25,6 +26,11 @@ public class Categoria implements Serializable {
     public Categoria(Integer id, String nome) {
         this.id = id;
         this.nome = nome;
+    }
+
+    public Categoria(CategoriaDTO objDto) {
+        this.id = objDto.getId();
+        this.nome = objDto.getNome();
     }
 
     public Integer getId() {

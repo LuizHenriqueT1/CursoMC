@@ -1,5 +1,6 @@
 package com.rick.cursomc.resources.exceptions;
 
+import com.rick.cursomc.services.exceptions.DataIntegrityViolationException;
 import com.rick.cursomc.services.exceptions.ObjectNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -21,5 +22,18 @@ public class ResourceExceptionHandler {
                 request.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<StandardError> dataIntegrityViolationException(DataIntegrityViolationException ex,
+                                                                         HttpServletRequest request) {
+        StandardError error = new StandardError(
+                System.currentTimeMillis(),
+                HttpStatus.CONFLICT.value(),
+                "Conflict Data Value",
+                ex.getMessage(),
+                request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 }
