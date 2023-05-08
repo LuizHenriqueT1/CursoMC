@@ -1,6 +1,7 @@
 package com.rick.cursomc.services;
 
 import com.rick.cursomc.domain.Categoria;
+import com.rick.cursomc.domain.Cliente;
 import com.rick.cursomc.domain.dtos.CategoriaDTO;
 import com.rick.cursomc.repositories.CategoriaRepository;
 import com.rick.cursomc.services.exceptions.DataIntegrityViolationException;
@@ -32,13 +33,9 @@ public class CategoriaService {
         return repository.findAll();
     }
 
-    public void delete(Integer id) {
-        findByID(id);
-        try {
-            repository.deleteById(id);
-        } catch (org.springframework.dao.DataIntegrityViolationException e) {
-            throw new DataIntegrityViolationException("Não é possivel excluir porque há entidades relacionadas");
-        }
+    public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        Pageable pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return repository.findAll(pageRequest);
     }
 
     public Categoria create(CategoriaDTO objDto) {
@@ -48,16 +45,24 @@ public class CategoriaService {
         return repository.save(newObj);
     }
 
-    public Categoria update(Integer id, CategoriaDTO objDto) {
-        objDto.setId(id);
-        findByID(id);
-        Categoria oldObj = new Categoria(objDto);
-        return repository.save(oldObj);
+    public Categoria update(Integer id, CategoriaDTO obj) {
+        obj.setId(id);
+        Categoria newObj = findByID(id);
+        updateData(newObj, obj);
+        return repository.save(newObj);
     }
 
-    public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-        Pageable pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        return repository.findAll(pageRequest);
+    private void updateData(Categoria newObj, CategoriaDTO obj) {
+        newObj.setNome(obj.getNome());
+    }
+
+    public void delete(Integer id) {
+        findByID(id);
+        try {
+            repository.deleteById(id);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException("Não é possivel excluir porque há entidades relacionadas");
+        }
     }
 
     private void validaCategoria(CategoriaDTO objDto) {
