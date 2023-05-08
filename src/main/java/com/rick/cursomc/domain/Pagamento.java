@@ -1,5 +1,6 @@
 package com.rick.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rick.cursomc.enums.EstadoPagamento;
 import jakarta.persistence.*;
 
@@ -16,6 +17,7 @@ public abstract class Pagamento implements Serializable {
 
     private Integer estado;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId
