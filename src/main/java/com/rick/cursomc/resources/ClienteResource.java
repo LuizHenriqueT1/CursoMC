@@ -3,6 +3,7 @@ package com.rick.cursomc.resources;
 import com.rick.cursomc.domain.Cliente;
 import com.rick.cursomc.domain.Cliente;
 import com.rick.cursomc.domain.dtos.ClienteDTO;
+import com.rick.cursomc.domain.dtos.ClienteNewDto;
 import com.rick.cursomc.services.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ClienteResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Cliente> clienteFindById(@PathVariable Integer id) {
-        Cliente obj = service.findByID(id);
+        Cliente obj = service.findID(id);
         return ResponseEntity.ok().body(obj);
     }
 
@@ -47,10 +48,11 @@ public class ClienteResource {
     }
 
     @PostMapping
-    public ResponseEntity<ClienteDTO> create(@Valid @RequestBody ClienteDTO objDto) {
-        Cliente newObj = service.create(objDto);
+    public ResponseEntity<ClienteNewDto> insert(@Valid @RequestBody ClienteNewDto objDto) {
+        Cliente obj = service.fromDto(objDto);
+        obj = service.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(newObj.getId()).toUri();
+                .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 

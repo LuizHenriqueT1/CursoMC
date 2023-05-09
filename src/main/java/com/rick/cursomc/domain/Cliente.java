@@ -2,6 +2,7 @@ package com.rick.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rick.cursomc.domain.dtos.ClienteDTO;
+import com.rick.cursomc.domain.dtos.ClienteNewDto;
 import com.rick.cursomc.enums.TipoCliente;
 import jakarta.persistence.*;
 
@@ -24,7 +25,7 @@ public class Cliente implements Serializable {
     private String cpfOuCnpj;
     private Integer tipo;
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
     @ElementCollection
@@ -44,12 +45,6 @@ public class Cliente implements Serializable {
         this.email = email;
         this.cpfOuCnpj = cpfOuCnpj;
         this.tipo = (tipo==null) ? null : tipo.getCod();
-    }
-
-    public Cliente(ClienteDTO objDto) {
-        this.id = objDto.getId();
-        this.nome = objDto.getNome();
-        this.email = objDto.getEmail();
     }
 
     public Integer getId() {
