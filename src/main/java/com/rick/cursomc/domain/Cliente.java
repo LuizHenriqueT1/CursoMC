@@ -1,8 +1,6 @@
 package com.rick.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rick.cursomc.domain.dtos.ClienteDTO;
-import com.rick.cursomc.domain.dtos.ClienteNewDto;
 import com.rick.cursomc.enums.TipoCliente;
 import jakarta.persistence.*;
 

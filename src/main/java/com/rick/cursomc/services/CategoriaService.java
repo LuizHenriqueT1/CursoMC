@@ -1,7 +1,6 @@
 package com.rick.cursomc.services;
 
 import com.rick.cursomc.domain.Categoria;
-import com.rick.cursomc.domain.Cliente;
 import com.rick.cursomc.domain.dtos.CategoriaDTO;
 import com.rick.cursomc.repositories.CategoriaRepository;
 import com.rick.cursomc.services.exceptions.DataIntegrityViolationException;
