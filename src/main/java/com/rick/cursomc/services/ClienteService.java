@@ -3,6 +3,7 @@ package com.rick.cursomc.services;
 import com.rick.cursomc.domain.Cidade;
 import com.rick.cursomc.domain.Cliente;
 import com.rick.cursomc.domain.Endereco;
+import com.rick.cursomc.domain.dtos.ClienteDTO;
 import com.rick.cursomc.domain.dtos.ClienteNewDto;
 import com.rick.cursomc.enums.TipoCliente;
 import com.rick.cursomc.repositories.CidadeRepository;
@@ -53,9 +54,8 @@ public class ClienteService {
         return obj;
     }
 
-    public Cliente update(Integer id, Cliente obj) {
-        obj.setId(id);
-        Cliente newObj = findID(id);
+    public Cliente update(Cliente obj) {
+        Cliente newObj = findID(obj.getId());
         updateData(newObj, obj);
         return clienteRepository.save(newObj);
     }
@@ -80,6 +80,11 @@ public class ClienteService {
             throw new DataIntegrityViolationException("Não é possivel excluir porque há entidades relacionadas");
         }
     }
+
+    public Cliente fromDTO(ClienteDTO objDto) {
+        return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
+    }
+
     public Cliente fromDto(ClienteNewDto objDto) {
         Cliente cliente = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(),
                 TipoCliente.toEnum(objDto.getTipo()));
