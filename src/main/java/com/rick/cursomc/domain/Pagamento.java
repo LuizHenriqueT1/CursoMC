@@ -1,6 +1,8 @@
 package com.rick.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.rick.cursomc.enums.EstadoPagamento;
 import jakarta.persistence.*;
 
@@ -8,6 +10,11 @@ import java.io.Serializable;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = PagamentoComBoleto.class, name = "pagamentoComBoleto"),
+        @JsonSubTypes.Type(value = PagamentoComCartao.class, name = "pagamentoComCartao")
+})
 public abstract class Pagamento implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -90,4 +90,5 @@ public class Produto implements Serializable {
     public void setItens(Set<ItemPedido> itens) {
         this.itens = itens;
     }
+
 }

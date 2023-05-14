@@ -28,7 +28,7 @@ public class ProdutoService {
     public Produto find(Integer id) {
         Optional<Produto> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Object Not Found: id "+ id));
+                "Object Not Found: id "+ id + ", Type: " +  Produto.class.getName()));
     }
 
     public Page<Produto> search(String nome, List<Integer> ids, Integer page, Integer linesPerPage, String orderBy, String direction) {

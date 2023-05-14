@@ -23,6 +23,12 @@ public class ProdutoResource {
     @Autowired
     private ProdutoService service;
 
+    @GetMapping(value = "/{id}")
+    private ResponseEntity<Produto> findById(@PathVariable Integer id) {
+        Produto objDto = service.find(id);
+        return ResponseEntity.ok().body(objDto);
+    }
+
     @GetMapping
     public ResponseEntity<Page<ProdutoDTO>> findPage(
             @RequestParam(value = "nome", defaultValue = "") String nome,

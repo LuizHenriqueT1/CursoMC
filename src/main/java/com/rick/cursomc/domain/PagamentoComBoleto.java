@@ -1,19 +1,21 @@
 package com.rick.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.rick.cursomc.enums.EstadoPagamento;
 import jakarta.persistence.Entity;
 
 import java.util.Date;
 
 @Entity
+@JsonTypeName("pagamentoComBoleto")
 public class PagamentoComBoleto extends Pagamento {
 
     private static final long serialVersionUID = 1L;
 
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm")
+    @JsonFormat(pattern="dd/MM/yyyy")
     private Date dataVencimento;
-    @JsonFormat(pattern="dd/MM/yyyy HH:mm")
+    @JsonFormat(pattern="dd/MM/yyyy")
     private Date dataPagamento;
 
     public PagamentoComBoleto() {
@@ -22,8 +24,8 @@ public class PagamentoComBoleto extends Pagamento {
     public PagamentoComBoleto(Integer id, EstadoPagamento estadoPagamento, Pedido pedido,
                               Date dataVencimento, Date dataPagamento) {
         super(id, estadoPagamento, pedido);
-        this.dataVencimento = dataVencimento;
         this.dataPagamento = dataPagamento;
+        this.dataVencimento = dataVencimento;
     }
 
     public Date getDataVencimento() {

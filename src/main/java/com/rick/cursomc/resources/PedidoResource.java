@@ -1,8 +1,6 @@
 package com.rick.cursomc.resources;
 
-import com.rick.cursomc.domain.Categoria;
 import com.rick.cursomc.domain.Pedido;
-import com.rick.cursomc.domain.dtos.CategoriaDTO;
 import com.rick.cursomc.services.PedidoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +25,9 @@ public class PedidoResource {
 
     @PostMapping
     public ResponseEntity<Pedido> insert(@Valid @RequestBody Pedido obj) {
-        Pedido newObj = service.insert(obj);
+        obj = service.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(newObj.getId()).toUri();
+                .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 }
