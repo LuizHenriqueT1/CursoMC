@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Arrays;
@@ -20,8 +21,6 @@ public class SecurityConfig  {
 
     @Autowired
     private Environment env;
-
-    private static final String[] PUBLIC_MATCHERS ={"/h2-console/**", "/produtos/**", "/categorias/**"};
 
     @Bean
     public SecurityFilterChain configure (HttpSecurity http) throws Exception {
@@ -37,5 +36,10 @@ public class SecurityConfig  {
                                 .map(ApiPathExclusion.GetApiPathExclusion::getPath).toArray(String[]::new)).permitAll()
                 .anyRequest().authenticated());
         return http.build();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
