@@ -3,7 +3,7 @@ package com.rick.cursomc.security.constant;
 public class ApiPathExclusion {
 
     public enum GetApiPathExclusion {
-        PRODUTOS("/produtos/**"), CATEGORIAS("/categorias/**");
+        PRODUTOS("/produtos/**"), CATEGORIAS("/categorias/**"), CLIENTES("/clientes/**");
         private final String path;
 
         GetApiPathExclusion(String path) {
