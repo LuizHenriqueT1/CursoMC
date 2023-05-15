@@ -1,6 +1,8 @@
 package com.rick.cursomc.configurations;
 
 import com.rick.cursomc.services.DBService;
+import com.rick.cursomc.services.EmailService;
+import com.rick.cursomc.services.SmtpEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +27,11 @@ public class DevConfig {
             dbService.instanciaDB();
         }
         return false;
+    }
+
+    @Bean
+    public EmailService emailService() {
+        return new SmtpEmailService();
     }
 
 }
