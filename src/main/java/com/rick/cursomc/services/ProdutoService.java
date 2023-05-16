@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,14 +26,17 @@ public class ProdutoService {
     private CategoriaRepository categoriaRepository;
 
     public Produto find(Integer id) {
-        Optional<Produto> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Object Not Found: id "+ id + ", Type: " +  Produto.class.getName()));
+        Produto obj = repository.findOne(id);
+        if (obj == null) {
+            throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id
+                    + ", Tipo: " + Produto.class.getName());
+        }
+        return obj;
     }
 
     public Page<Produto> search(String nome, List<Integer> ids, Integer page, Integer linesPerPage, String orderBy, String direction) {
-        Pageable pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        List<Categoria> categorias = categoriaRepository.findAllById(ids);
+        PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
+        List<Categoria> categorias = categoriaRepository.findAll(ids);
         return repository.findDistinctByNomeContainingAndCategoriasIn(nome, categorias, pageRequest);
     }
 

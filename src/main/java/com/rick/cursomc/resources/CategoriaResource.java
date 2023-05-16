@@ -3,7 +3,7 @@ package com.rick.cursomc.resources;
 import com.rick.cursomc.domain.Categoria;
 import com.rick.cursomc.domain.dtos.CategoriaDTO;
 import com.rick.cursomc.services.CategoriaService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class CategoriaResource {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Categoria> categoriaFindById (@PathVariable Integer id) {
-        Categoria obj = service.findByID(id);
+        Categoria obj = service.find(id);
         return ResponseEntity.ok().body(obj);
     }
 

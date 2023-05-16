@@ -5,8 +5,8 @@ import com.rick.cursomc.enums.TipoCliente;
 import com.rick.cursomc.repositories.ClienteRepository;
 import com.rick.cursomc.resources.exceptions.FieldMessage;
 import com.rick.cursomc.services.validation.utils.BR;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;

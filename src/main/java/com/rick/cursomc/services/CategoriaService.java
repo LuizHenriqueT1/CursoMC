@@ -22,10 +22,13 @@ public class CategoriaService {
     private CategoriaRepository repository;
 
 
-    public Categoria findByID(Integer id) {
-        Optional<Categoria> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Object Not Found: id "+ id));
+    public Categoria find(Integer id) {
+        Categoria obj = repository.findOne(id);
+        if (obj == null) {
+            throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id
+                    + ", Tipo: " + Categoria.class.getName());
+        }
+        return obj;
     }
 
     public List<Categoria> findAll() {
@@ -33,7 +36,7 @@ public class CategoriaService {
     }
 
     public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-        Pageable pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        PageRequest pageRequest = new PageRequest(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return repository.findAll(pageRequest);
     }
 
@@ -46,7 +49,7 @@ public class CategoriaService {
 
     public Categoria update(Integer id, CategoriaDTO obj) {
         obj.setId(id);
-        Categoria newObj = findByID(id);
+        Categoria newObj = find(id);
         updateData(newObj, obj);
         return repository.save(newObj);
     }
@@ -56,9 +59,9 @@ public class CategoriaService {
     }
 
     public void delete(Integer id) {
-        findByID(id);
+        find(id);
         try {
-            repository.deleteById(id);
+            repository.delete(id);
         } catch (org.springframework.dao.DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Não é possivel excluir porque há entidades relacionadas");
         }

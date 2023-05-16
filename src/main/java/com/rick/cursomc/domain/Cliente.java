@@ -3,7 +3,7 @@ package com.rick.cursomc.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rick.cursomc.enums.Perfil;
 import com.rick.cursomc.enums.TipoCliente;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;

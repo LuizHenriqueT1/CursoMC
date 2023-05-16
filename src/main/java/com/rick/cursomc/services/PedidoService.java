@@ -6,12 +6,11 @@ import com.rick.cursomc.domain.Pedido;
 import com.rick.cursomc.enums.EstadoPagamento;
 import com.rick.cursomc.repositories.*;
 import com.rick.cursomc.services.exceptions.ObjectNotFoundException;
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Optional;
 
 @Service
 public class PedidoService {
@@ -42,9 +41,12 @@ public class PedidoService {
     private EmailService emailService;
 
     public Pedido getPedidoFindById(Integer id) {
-        Optional<Pedido> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new ObjectNotFoundException(
-                "Object Not Found: id "+ id));
+        Pedido obj = repository.findOne(id);
+        if (obj == null) {
+            throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id
+                    + ", Tipo: " + Pedido.class.getName());
+        }
+        return obj;
     }
 
     @Transactional
@@ -66,7 +68,7 @@ public class PedidoService {
             ip.setPreco(ip.getProduto().getPreco());
             ip.setPedido(obj);
         }
-        itemPedidoRepository.saveAll(obj.getItens());
+        itemPedidoRepository.save(obj.getItens());
         emailService.sendOrderConfirmationEmail(obj);
         return obj;
     }

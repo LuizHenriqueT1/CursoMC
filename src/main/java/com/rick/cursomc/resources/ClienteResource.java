@@ -1,11 +1,10 @@
 package com.rick.cursomc.resources;
 
 import com.rick.cursomc.domain.Cliente;
-import com.rick.cursomc.domain.Cliente;
 import com.rick.cursomc.domain.dtos.ClienteDTO;
 import com.rick.cursomc.domain.dtos.ClienteNewDto;
 import com.rick.cursomc.services.ClienteService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +42,7 @@ public class ClienteResource {
             @RequestParam(value = "orderBy", defaultValue = "nome")String orderBy,
             @RequestParam(value = "direction", defaultValue = "ASC")String direction) {
         Page<Cliente> list = service.findPage(page, linesPerPage, orderBy, direction);
-        Page<ClienteDTO> listDto = list.map(obj -> new ClienteDTO(obj));
+        Page<ClienteDTO> listDto = list.map(ClienteDTO::new);
         return ResponseEntity.ok().body(listDto);
     }
 

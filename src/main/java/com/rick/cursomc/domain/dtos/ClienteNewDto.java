@@ -1,9 +1,9 @@
 package com.rick.cursomc.domain.dtos;
 
 import com.rick.cursomc.services.validation.ClienteInsert;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 

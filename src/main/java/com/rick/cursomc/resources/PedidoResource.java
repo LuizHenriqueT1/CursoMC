@@ -2,7 +2,7 @@ package com.rick.cursomc.resources;
 
 import com.rick.cursomc.domain.Pedido;
 import com.rick.cursomc.services.PedidoService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -16,7 +16,11 @@ public class EnderecoService {
     private EnderecoRepository repository;
 
     public Endereco getFindById(Integer id) {
-        Optional<Endereco> endereco = repository.findById(id);
-        return endereco.orElseThrow(() -> new ObjectNotFoundException("Object Not Found: id " + id));
+        Endereco obj = repository.findOne(id);
+        if (obj == null) {
+            throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id
+                    + ", Tipo: " + Endereco.class.getName());
+        }
+        return obj;
     }
 }

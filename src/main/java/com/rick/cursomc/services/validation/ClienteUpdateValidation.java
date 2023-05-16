@@ -3,9 +3,9 @@ import com.rick.cursomc.domain.Cliente;
 import com.rick.cursomc.domain.dtos.ClienteDTO;
 import com.rick.cursomc.repositories.ClienteRepository;
 import com.rick.cursomc.resources.exceptions.FieldMessage;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerMapping;
 

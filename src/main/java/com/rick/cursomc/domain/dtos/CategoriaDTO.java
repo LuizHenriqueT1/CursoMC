@@ -1,8 +1,8 @@
 package com.rick.cursomc.domain.dtos;
 
 import com.rick.cursomc.domain.Categoria;
-import jakarta.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 

@@ -11,17 +11,15 @@ import com.rick.cursomc.repositories.ClienteRepository;
 import com.rick.cursomc.repositories.EnderecoRepository;
 import com.rick.cursomc.services.exceptions.DataIntegrityViolationException;
 import com.rick.cursomc.services.exceptions.ObjectNotFoundException;
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -39,8 +37,12 @@ public class ClienteService {
     private BCryptPasswordEncoder passwordEncoder;
 
     public Cliente findID(Integer id) {
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-        return cliente.orElseThrow(() -> new ObjectNotFoundException("Object Not Found: id " + id));
+        Cliente obj = clienteRepository.findOne(id);
+        if (obj == null) {
+            throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id
+                    + ", Tipo: " + Cliente.class.getName());
+        }
+        return obj;
     }
 
     public List<Cliente> findAll() {
@@ -65,7 +67,7 @@ public class ClienteService {
     }
 
     public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-        Pageable pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return clienteRepository.findAll(pageRequest);
     }
 
@@ -79,7 +81,7 @@ public class ClienteService {
     public void delete(Integer id) {
         findID(id);
         try {
-            clienteRepository.deleteById(id);
+            clienteRepository.delete(id);
         } catch (org.springframework.dao.DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException("Não é possivel excluir porque há entidades relacionadas");
         }
@@ -93,9 +95,7 @@ public class ClienteService {
         Cliente cliente = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(),
                 TipoCliente.toEnum(objDto.getTipo()), passwordEncoder.encode(objDto.getSenha()));
 
-        Cidade cidade = cidadeRepository.findById(objDto.getCidadeId())
-                .orElseThrow(() -> new ObjectNotFoundException(
-                        "Cidade não encontrada com ID: " + objDto.getCidadeId()));
+        Cidade cidade = cidadeRepository.findOne(objDto.getCidadeId());
 
         Endereco endereco = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(),
                 objDto.getBairro(), objDto.getCep(), cliente, cidade);

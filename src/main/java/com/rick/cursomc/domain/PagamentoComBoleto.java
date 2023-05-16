@@ -3,7 +3,7 @@ package com.rick.cursomc.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.rick.cursomc.enums.EstadoPagamento;
-import jakarta.persistence.Entity;
+import javax.persistence.Entity;
 
 import java.util.Date;
 

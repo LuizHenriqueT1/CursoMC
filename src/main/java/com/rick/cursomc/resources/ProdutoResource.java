@@ -1,12 +1,10 @@
 package com.rick.cursomc.resources;
 
-import com.rick.cursomc.domain.Categoria;
 import com.rick.cursomc.domain.Produto;
-import com.rick.cursomc.domain.dtos.CategoriaDTO;
 import com.rick.cursomc.domain.dtos.ProdutoDTO;
 import com.rick.cursomc.resources.utils.URL;
 import com.rick.cursomc.services.ProdutoService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

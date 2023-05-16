@@ -1,7 +1,7 @@
 package com.rick.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.io.Serializable;
 import java.text.NumberFormat;

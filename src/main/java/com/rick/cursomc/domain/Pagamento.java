@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.rick.cursomc.enums.EstadoPagamento;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.io.Serializable;
 
