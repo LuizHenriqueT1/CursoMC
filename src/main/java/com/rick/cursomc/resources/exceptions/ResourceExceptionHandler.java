@@ -1,5 +1,6 @@
 package com.rick.cursomc.resources.exceptions;
 
+import com.rick.cursomc.services.exceptions.AuthorizationException;
 import com.rick.cursomc.services.exceptions.DataIntegrityViolationException;
 import com.rick.cursomc.services.exceptions.ObjectNotFoundException;
 import javax.servlet.http.HttpServletRequest;
@@ -54,5 +55,18 @@ public class ResourceExceptionHandler {
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<StandardError> authorization(AuthorizationException ex,
+                                                                 HttpServletRequest request) {
+        StandardError error = new StandardError(
+                System.currentTimeMillis(),
+                HttpStatus.FORBIDDEN.value(),
+                "Access denied",
+                ex.getMessage(),
+                request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
 }

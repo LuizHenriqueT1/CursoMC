@@ -5,10 +5,13 @@ import com.rick.cursomc.domain.Cliente;
 import com.rick.cursomc.domain.Endereco;
 import com.rick.cursomc.domain.dtos.ClienteDTO;
 import com.rick.cursomc.domain.dtos.ClienteNewDto;
+import com.rick.cursomc.enums.Perfil;
 import com.rick.cursomc.enums.TipoCliente;
 import com.rick.cursomc.repositories.CidadeRepository;
 import com.rick.cursomc.repositories.ClienteRepository;
 import com.rick.cursomc.repositories.EnderecoRepository;
+import com.rick.cursomc.security.UserSS;
+import com.rick.cursomc.services.exceptions.AuthorizationException;
 import com.rick.cursomc.services.exceptions.DataIntegrityViolationException;
 import com.rick.cursomc.services.exceptions.ObjectNotFoundException;
 import javax.transaction.Transactional;
@@ -38,6 +41,10 @@ public class ClienteService {
 
     public Cliente findID(Integer id) {
         Cliente obj = clienteRepository.findOne(id);
+        UserSS userLogged = UserService.authenticated();
+        if (userLogged == null || !userLogged.hasRole(Perfil.ADMIN) && !id.equals(userLogged.getId())) {
+            throw new AuthorizationException("Acesso negado");
+        }
         if (obj == null) {
             throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id
                     + ", Tipo: " + Cliente.class.getName());
