@@ -1,13 +1,16 @@
 package com.rick.cursomc.services;
 
-import com.rick.cursomc.domain.ItemPedido;
-import com.rick.cursomc.domain.PagamentoComBoleto;
-import com.rick.cursomc.domain.Pedido;
+import com.rick.cursomc.domain.*;
 import com.rick.cursomc.enums.EstadoPagamento;
 import com.rick.cursomc.repositories.*;
+import com.rick.cursomc.security.UserSS;
+import com.rick.cursomc.services.exceptions.AuthorizationException;
 import com.rick.cursomc.services.exceptions.ObjectNotFoundException;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -47,6 +50,17 @@ public class PedidoService {
                     + ", Tipo: " + Pedido.class.getName());
         }
         return obj;
+    }
+
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        UserSS userLogged = UserService.authenticated();
+        if (userLogged == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+
+        PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
+        Cliente cliente = clienteRepository.findOne(userLogged.getId());
+        return repository.findByCliente(cliente, pageRequest);
     }
 
     @Transactional
