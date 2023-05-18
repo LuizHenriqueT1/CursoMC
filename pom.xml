@@ -81,6 +81,7 @@
 			<version>LATEST</version>
 		</dependency>
 
+		<!--Para Extrair a extensao de uma arquivo-->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>

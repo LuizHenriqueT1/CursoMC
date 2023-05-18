@@ -16,6 +16,7 @@ import com.rick.cursomc.services.exceptions.DataIntegrityViolationException;
 import com.rick.cursomc.services.exceptions.ObjectNotFoundException;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 
@@ -43,6 +45,12 @@ public class ClienteService {
 
     @Autowired
     private S3Service s3Service;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Value("${img.prefix.client.profile}")
+    private String prefix;
 
     public Cliente findID(Integer id) {
         Cliente obj = clienteRepository.findOne(id);
@@ -88,11 +96,12 @@ public class ClienteService {
         if (userLogged == null) {
             throw new AuthorizationException("Acesso negado!");
         }
-        URI uri =  s3Service.uploadFile(multipartFile);
-        Cliente cliente = clienteRepository.findOne(userLogged.getId());
-        cliente.setImageUrl(uri.toString());
-        clienteRepository.save(cliente);
-        return uri;
+
+        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        //https://curso-spring-safeway-aws.s3.amazonaws.com/cp1.jpg  "cp1.jpg"
+        String fileName = prefix + userLogged.getId() + ".jpg";
+
+        return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
     }
 
     //Recebe newObj que é o objeto Cliente que terá seus dados atualizados
