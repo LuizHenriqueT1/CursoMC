@@ -88,6 +88,8 @@
 			<version>LATEST</version>
 		</dependency>
 
+		<!--Para recortar e redimensionar a imagem-->
+
 		<dependency>
 			<groupId>org.imgscalr</groupId>
 			<artifactId>imgscalr-lib</artifactId>

@@ -52,6 +52,10 @@ public class ClienteService {
     @Value("${img.prefix.client.profile}")
     private String prefix;
 
+    @Value("${img.profile.size}")
+    private Integer sizeImg;
+
+
     public Cliente findID(Integer id) {
         Cliente obj = clienteRepository.findOne(id);
         UserSS userLogged = UserService.authenticated();
@@ -98,6 +102,9 @@ public class ClienteService {
         }
 
         BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        jpgImage = imageService.cropSquare(jpgImage);
+        jpgImage = imageService.resize(jpgImage, sizeImg);
+
         //https://curso-spring-safeway-aws.s3.amazonaws.com/cp1.jpg  "cp1.jpg"
         String fileName = prefix + userLogged.getId() + ".jpg";
 
