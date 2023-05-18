@@ -21,7 +21,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
 import java.util.List;
 
 @Service
@@ -38,6 +40,9 @@ public class ClienteService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private S3Service s3Service;
 
     public Cliente findID(Integer id) {
         Cliente obj = clienteRepository.findOne(id);
@@ -76,6 +81,10 @@ public class ClienteService {
     public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
         PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
         return clienteRepository.findAll(pageRequest);
+    }
+
+    public URI uploadProfilePicture(MultipartFile multipartFile) {
+        return s3Service.uploadFile(multipartFile);
     }
 
     //Recebe newObj que é o objeto Cliente que terá seus dados atualizados
