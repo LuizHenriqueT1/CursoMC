@@ -84,7 +84,15 @@ public class ClienteService {
     }
 
     public URI uploadProfilePicture(MultipartFile multipartFile) {
-        return s3Service.uploadFile(multipartFile);
+        UserSS userLogged = UserService.authenticated();
+        if (userLogged == null) {
+            throw new AuthorizationException("Acesso negado!");
+        }
+        URI uri =  s3Service.uploadFile(multipartFile);
+        Cliente cliente = clienteRepository.findOne(userLogged.getId());
+        cliente.setImageUrl(uri.toString());
+        clienteRepository.save(cliente);
+        return uri;
     }
 
     //Recebe newObj que é o objeto Cliente que terá seus dados atualizados
