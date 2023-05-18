@@ -73,6 +73,19 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
+    public Cliente findByEmail(String email) {
+        UserSS userLogged = UserService.authenticated();
+        if (userLogged == null || !userLogged.hasRole(Perfil.ADMIN) && !email.equals(userLogged.getUsername())) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        Cliente obj = clienteRepository.findByEmail(email);
+        if (obj == null) {
+            throw new ObjectNotFoundException("Objeto não encontrado! Id: " + userLogged.getId()
+                    + ", Tipo: " + Cliente.class.getName());
+        }
+        return obj;
+    }
+
     @Transactional
     public Cliente insert(Cliente obj) {
         obj.setId(null);
