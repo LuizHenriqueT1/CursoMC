@@ -37,7 +37,7 @@ public class ResourceExceptionHandler {
         StandardError error = new StandardError(
                 System.currentTimeMillis(),
                 HttpStatus.CONFLICT.value(),
-                "Conflict Data Value",
+                "Data integrity",
                 ex.getMessage(),
                 request.getRequestURI());
 
@@ -49,16 +49,16 @@ public class ResourceExceptionHandler {
                                                                          HttpServletRequest request) {
         ValidationError errors = new ValidationError(
                 System.currentTimeMillis(),
-                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
                 "Field Validation Error",
-                "Required Fields: ",
+                ex.getMessage(),
                 request.getRequestURI());
 
         for(FieldError x :ex.getBindingResult().getFieldErrors()) {
             errors.addError(x.getField(), x.getDefaultMessage());
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errors);
     }
 
     @ExceptionHandler(AuthorizationException.class)
@@ -93,7 +93,7 @@ public class ResourceExceptionHandler {
         StandardError error = new StandardError(
                 System.currentTimeMillis(),
                 code.value(),
-                "Amazon Service",
+                "Error Amazon Service",
                 ex.getMessage(),
                 request.getRequestId());
         return ResponseEntity.status(code).body(error);
@@ -105,7 +105,7 @@ public class ResourceExceptionHandler {
         StandardError error = new StandardError(
                 System.currentTimeMillis(),
                 HttpStatus.BAD_REQUEST.value(),
-                "Amazon Cliente",
+                "Error Amazon Cliente",
                 ex.getMessage(),
                 request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
@@ -117,7 +117,7 @@ public class ResourceExceptionHandler {
         StandardError error = new StandardError(
                 System.currentTimeMillis(),
                 HttpStatus.BAD_REQUEST.value(),
-                "Amazon S3",
+                "Error Amazon S3",
                 ex.getMessage(),
                 request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
